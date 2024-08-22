@@ -1,5 +1,4 @@
 import CardList from "../../Components/CardList/CardList";
-import Hero from "../../Components/Hero/Hero";
 import ListPortfolio from "../../Components/Portfolio/ListPotfolio/ListPortfolio";
 import Search from "../../Components/Search/Search";
 import { ChangeEvent, SyntheticEvent, useState } from 'react';
@@ -27,7 +26,6 @@ const SearchPage = (props: Props) => {
         setSearchResults(result.data)
       }
     }
-  
   
     const onPortfolioCreate = (e : any) => {
       e.preventDefault();
