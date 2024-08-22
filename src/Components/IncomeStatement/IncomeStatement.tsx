@@ -4,6 +4,7 @@ import { formatLargeMonetaryNumber, formatRatio } from '../../Helpers/NumberForm
 import { CompanyIncomeStatement } from '../../company';
 import { getIncomeStatement } from '../../api';
 import Table from '../Table/Table';
+import Spinner from '../Spinner/Spinner';
 
 interface Props {}
 
@@ -90,7 +91,7 @@ const IncomeStatement = (props: Props) => {
     {incomeStatement ? (
       <><Table config={configs} data={incomeStatement} /></>
     ) : (
-      <>Loaing...</>
+      <Spinner />
     )}
     </>
   )

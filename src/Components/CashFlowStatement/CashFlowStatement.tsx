@@ -4,6 +4,7 @@ import { CompanyCashFlow } from '../../company';
 import { getCashFlowStatements } from '../../api';
 import { formatLargeMonetaryNumber } from '../../Helpers/NumberFormatting';
 import Table from '../Table/Table';
+import Spinner from '../Spinner/Spinner';
 
 interface Props {}
 
@@ -68,7 +69,7 @@ const CashFlowStatement = (props: Props) => {
     return cashFlow ? (
         <Table config={config} data={cashFlow} />
       ) : (
-        <div>Loading...</div>
+        <Spinner />
     );
 }
 
