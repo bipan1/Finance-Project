@@ -12,6 +12,7 @@ type UserContextType = {
     loginUser : (userName : string, password : string) => void;
     logout : () => void;
     isLoggedIn : () => boolean;
+    loading : boolean;
 }
 
 type Props = {children : React.ReactNode};
@@ -22,7 +23,8 @@ export const UserProvider = ({children} : Props) => {
     const navigate = useNavigate();
     const [token, setToken] = useState<string | null>(null);
     const [user, setUser] = useState<UserProfile | null>(null);
-    const [isReady, setIsReady] = useState(false);
+    const [isReady, setIsReady] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
 
 
     useEffect(() => {
@@ -38,6 +40,7 @@ export const UserProvider = ({children} : Props) => {
     }, [token]);
 
     const registerUser = async(email : string, username : string, password : string) => {
+        setLoading(true);
         await registerAPI(email, username, password).then((res) => {
             if(res){
                 localStorage.setItem('token', res?.data.token);
@@ -52,10 +55,12 @@ export const UserProvider = ({children} : Props) => {
                 navigate("/search");
             }
         }).catch((e:any) => toast.warning("Server error happened"))
+        .finally(() => setLoading(false));
         
     }
 
     const loginUser = async(username : string, password : string) => {
+        setLoading(true);
         await loginAPI(username, password).then((res) => {
             if(res){
                 localStorage.setItem('token', res?.data.token);
@@ -70,6 +75,7 @@ export const UserProvider = ({children} : Props) => {
                 navigate("/search");
             }
         }).catch((e:any) => toast.warning("Server error happened"))
+        .finally(() => setLoading(false));
         
     }
 
@@ -87,7 +93,7 @@ export const UserProvider = ({children} : Props) => {
     }
 
     return (
-        <UserContext.Provider value={{loginUser, user, token, logout, registerUser, isLoggedIn}}>
+        <UserContext.Provider value={{loginUser, loading, user, token, logout, registerUser, isLoggedIn}}>
             {isReady ? children: null}
         </UserContext.Provider>
     )

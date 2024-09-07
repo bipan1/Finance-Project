@@ -11,6 +11,7 @@ import {
   portfolioGetAPI,
 } from "../../Services/PortfolioService";
 import { toast } from "react-toastify";
+import Spinner from "../../Components/Spinner/Spinner";
 
 interface Props {}
 
@@ -19,6 +20,7 @@ const SearchPage = (props: Props) => {
     const [searchResults, setSearchResults] = useState<CompanySearch[]>([]);
     const [serverError, setServerError] = useState<string>('');
     const [portfolioValues, setPortfolioValues] = useState<PortfolioGet[] | null>([]);
+    const [loading, setLoading] = useState<boolean>(false);
   
     const handleChange = (e : ChangeEvent<HTMLInputElement>) => {
         setSearch(e.target.value)
@@ -76,6 +78,7 @@ const SearchPage = (props: Props) => {
     }
   return (
     <>
+        {loading && <Spinner />}
         <Search search={search} handleChange={handleChange} onSearchSubmit={onSearchSubmit}/>
         <ListPortfolio onPortDelete={onPortDelete} portfolioValues={portfolioValues!} />
         {serverError && <h1>{serverError}</h1>}
