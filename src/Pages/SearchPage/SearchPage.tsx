@@ -28,15 +28,18 @@ const SearchPage = (props: Props) => {
   
     const onSearchSubmit = async(e : SyntheticEvent) =>{
       e.preventDefault();
+      setLoading(true);
       const result = await searchCompanies(search);
       if(typeof result === "string"){
         setServerError(result);
       } else if(Array.isArray(result.data)){
         setSearchResults(result.data)
       }
+      setLoading(true);
     }
 
     const getPortfolio = () => {
+      setLoading(true);
       portfolioGetAPI()
         .then((res : any) => {
           if (res?.data) {
@@ -45,11 +48,12 @@ const SearchPage = (props: Props) => {
         })
         .catch((e) => {
           setPortfolioValues(null);
-        });
+        }).finally(() => setLoading(false))
     };
   
     const onPortfolioCreate = (e : any) => {
       e.preventDefault();
+      setLoading(true);
       portfolioAddAPI(e.target[0].value)
       .then((res) => {
         if (res?.status === 204) {
@@ -59,7 +63,7 @@ const SearchPage = (props: Props) => {
       })
       .catch((e) => {
         toast.warning("Could not add stock to portfolio!");
-      });
+      }).finally(() => setLoading(false));
     };
   
     useEffect(() => {
@@ -69,12 +73,13 @@ const SearchPage = (props: Props) => {
 
     const onPortDelete = (e:any) => {
       e.preventDefault();
+      setLoading(true);
       portfolioDeleteAPI(e.target[0].value).then((res) => {
         if (res?.status == 200) {
           toast.success("Stock deleted from portfolio!");
           getPortfolio();
         }
-      });
+      }).finally(() => setLoading(false));
     }
   return (
     <>
